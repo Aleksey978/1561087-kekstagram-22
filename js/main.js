@@ -26,25 +26,36 @@ const COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
+const MAX_ID = 25;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+
 function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const createPhotoDescription = () => {
-  const randomNameIndex = _.random(0, NAMES.length - 1);
-  const randomCommentsIndex = _.random(0, COMMENTS.length - 1);
+const createUrl = (photoNum) => {
+  return 'photos/' + photoNum + '.jpg';
+}
+
+const createPhotoDescription = (photoId) => {
+  const randomNameIndex = getRandomInt(0, NAMES.length - 1);
+  const randomCommentsIndex = getRandomInt(0, COMMENTS.length - 1);
+  const randomId = getRandomInt(0, photos.length - 1);
 
   return {
     name: NAMES[randomNameIndex],
-    url: 'photos/' + getRandomInt(1, 25) + '.jpg',
-    description: '',
-    likes: getRandomInt(15, 200),
+    url: createUrl(photoId),
+    likes: getRandomInt(MIN_LIKES, MAX_LIKES),
     comment: COMMENTS[randomCommentsIndex],
+    id: randomId,
   };
 };
 
-console.log(
-  createPhotoDescription()
-);
+let photos = [];
+for (let i = 1; i < MAX_ID+1; i++) {
+  photos.push(createPhotoDescription(i));
+}
+
+console.log(photos);
+
